@@ -1,7 +1,9 @@
 # ebay-flask-app
 
 Install ebaysdk
+
 Install flask
+
 Install Beautiful soup
 
 Navigate to the ebay-flask-app folder in your terminal or command prompt then enter
