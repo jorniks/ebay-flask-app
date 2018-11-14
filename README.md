@@ -2,9 +2,18 @@
 
 Install ebaysdk
 
+$ sudo easy_install ebaysdk
+
+
 Install flask
 
+$ pip install Flask
+
+
 Install Beautiful soup
+
+$ sudo apt-get install python3-bs4
+
 
 Navigate to the ebay-flask-app folder in your terminal or command prompt then enter
 
@@ -19,10 +28,3 @@ http://127.0.0.1:5000/
 
 
 to run the file.
-
-
-
-ISSUES
-
-It only returns one result out of the many results it get from the ebay database.
-I want it to return all the results it gets and display it on the interface
