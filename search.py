@@ -16,6 +16,21 @@ from flask import Flask
 from flask import request, render_template, jsonify
 
 
+HTML_OUTPUT = """
+    <div class=\"col-lg-6\">
+        <div class=\"box wow fadeInLeft\">
+            <div class=\"icon"><i class=\"ion-ios-stopwatch-outline\"></i></div>
+            <h4 class=\"title\">%s</h4>
+            <ul>
+                <li>Price: $ %s</li>
+                <li>Seller: %s</li>
+                <li>Condition: %s</li>
+                <li>Listing Type: %s</li>
+            </ul>
+            <small><a href="%s" target="_blank">Go to site</a></small>
+        </div>
+    </div><br>"""
+
 # Instantiate our Flask class.
 app = Flask(__name__)
 
@@ -24,6 +39,21 @@ app = Flask(__name__)
 @app.route('/')
 def ebay_serve_page():
     return render_template("index.html")
+
+
+def file_clear_html():
+    file = open("templates/result.html", 'r+')
+    contents = file.read().split("\n")
+    file.seek(0)
+    file.truncate()
+    file.close()
+
+
+def file_write_html(items_to_write):
+    file_clear_html()
+    with open("templates/result.html", 'w') as f:
+        for item in items_to_write:
+            f.write("%s" % item)
 
 # Grab search string entered by user...
 @app.route('/ebay_page_post', methods=['GET', 'POST'])
@@ -40,46 +70,37 @@ def ebay_page_post():
             response = api.execute('findItemsAdvanced', api_request)
             soup = BeautifulSoup(response.content, 'lxml')
 
-            totalentries = int(soup.find('totalentries').text)
             items = soup.find_all('item')
 
             # This will be returned
-            itemsFound = {}
-
-            # This index will be incremented 
-            # each time an item is added
-            index = 0
+            items_found = []
 
             for item in items:
                 cat = item.categoryname.string.lower()
-                title = item.title.string.lower().strip()
-                price = int(round(float(item.currentprice.string)))
+                title = item.title.string.strip()
+                price = float(item.currentprice.string)
                 url = item.viewitemurl.string.lower()
-                seller = item.sellerusername.text.lower()
-                listingtype = item.listingtype.string.lower()
-                condition = item.conditiondisplayname.string.lower()
+                seller = item.sellerusername.text
+                listingtype = item.listingtype.string
+                condition = item.conditiondisplayname.string
 
                 print ('____________________________________________________________')
-                 
-                #return json format of the result for Ajax processing
-            #return jsonify(cat + '|' + title + '|' + str(price) + '|' + url + '|' + seller + '|' + listingtype + '|' + condition)
-
+                
                 # Adding the item found in the collection
-                # index is the key and the item json is the value
-                itemsFound[index] = jsonify(cat + '|' + title + '|' + str(price) + '|' + url + '|' + seller + '|' + listingtype + '|' + condition + '#')
+                items_found.append(HTML_OUTPUT % (title,
+                                                price,
+                                                seller,
+                                                condition,
+                                                listingtype,
+                                                url))
 
-                # Increment the index for the next items key
-                index+=1
-
-            for key in itemsFound:
-                return itemsFound[key]
+            file_write_html(items_found)
 
         except ConnectionError as e:
             return jsonify(e)
-        
-    #return jsonify(search)
 
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.config['TEMPLATES_AUTO_RELOAD'] = True
+    app.run(debug = True)
