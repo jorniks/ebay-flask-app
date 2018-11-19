@@ -42,7 +42,7 @@ def ebay_serve_page():
 
 
 def file_clear_html():
-    file = open("templates/result.html", 'r+')
+    file = open("static/result.html", 'r+')
     contents = file.read().split("\n")
     file.seek(0)
     file.truncate()
@@ -51,7 +51,7 @@ def file_clear_html():
 
 def file_write_html(items_to_write):
     file_clear_html()
-    with open("templates/result.html", 'w') as f:
+    with open("static/result.html", 'w') as f:
         for item in items_to_write:
             f.write("%s" % item)
 
@@ -95,6 +95,7 @@ def ebay_page_post():
                                                 url))
 
             file_write_html(items_found)
+            return "1"
 
         except ConnectionError as e:
             return jsonify(e)
@@ -102,5 +103,4 @@ def ebay_page_post():
 
 
 if __name__ == '__main__':
-    app.config['TEMPLATES_AUTO_RELOAD'] = True
     app.run(debug = True)
