@@ -56,8 +56,6 @@
 
 	        	<div class="row" id="returned">
 
-	        		{% include 'result.html' %}
-
 	        	</div>
 	      	</div>
 	    </section><!-- #more-features -->
@@ -99,6 +97,7 @@
 	$(document).ready(function() {
 		$(".button").click(function() {
 			var search = $(".search").val().trim();
+			var file = search + ".html";
 			if (search) {
 				$.ajax({
 					type: 'POST',
@@ -107,8 +106,17 @@
 					contentType: 'application/json;charset=UTF-8',
 					dataType: "json",
 					success:function(data) {
-						//$("#returned").html("");
-						$("#returned").html(data);
+						if (data == "1") {
+							$.ajax({
+							   	url:"/static/"+file,
+							   	dataType:'html',
+							   	success: function(items){
+							       	$('#returned').html(items);
+							   	}
+							});
+						} else {
+							$("#returned").html(data);
+						}
 					}
 				});
 			}

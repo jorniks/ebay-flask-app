@@ -29,20 +29,22 @@ HTML_OUTPUT = """
             </ul>
             <small><a href="%s" target="_blank">Go to site</a></small>
         </div>
-    </div><br>"""
+    </div>"""
 
 # Instantiate our Flask class.
 app = Flask(__name__)
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 
 # Decide which URL will trigger everything...
 @app.route('/')
 def ebay_serve_page():
+    empty_folder()
     return render_template("index.html")
 
 
 def file_clear_html():
-    file = open("static/result.html", 'r+')
+    file = open("static/res.html", 'r+')
     contents = file.read().split("\n")
     file.seek(0)
     file.truncate()
@@ -51,9 +53,21 @@ def file_clear_html():
 
 def file_write_html(items_to_write):
     file_clear_html()
-    with open("static/result.html", 'w') as f:
-        for item in items_to_write:
-            f.write("%s" % item)
+    f = open("static/res.html", 'w+')
+    for item in items_to_write:
+        f.write("%s" % item)
+    f.close()
+
+def empty_folder():
+    folder = 'static'
+    for the_file in os.listdir(folder):
+        file_path = os.path.join(folder, the_file)
+        try:
+            if os.path.isfile(file_path):
+                os.unlink(file_path)
+            #elif os.path.isdir(file_path): shutil.rmtree(file_path)
+        except Exception as e:
+            print(e)
 
 # Grab search string entered by user...
 @app.route('/ebay_page_post', methods=['GET', 'POST'])
@@ -94,7 +108,10 @@ def ebay_page_post():
                                                 listingtype,
                                                 url))
 
-            file_write_html(items_found)
+            f = open("static/"+search+".html", 'w+')
+            for item in items_found:
+                f.write("%s" % item)
+            f.close()
             return "1"
 
         except ConnectionError as e:
