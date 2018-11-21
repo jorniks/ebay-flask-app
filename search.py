@@ -19,7 +19,7 @@ from flask import request, render_template, jsonify
 HTML_OUTPUT = """
     <div class=\"col-lg-6\">
         <div class=\"box wow fadeInLeft\">
-            <div class=\"icon"><i class=\"ion-ios-stopwatch-outline\"></i></div>
+            <div class=\"icon\"><img src=\"%s\" alt=\"Item Image\"></div>
             <h4 class=\"title\">%s</h4>
             <ul>
                 <li>Price: $ %s</li>
@@ -41,22 +41,6 @@ app.config['TEMPLATES_AUTO_RELOAD'] = True
 def ebay_serve_page():
     empty_folder()
     return render_template("index.html")
-
-
-def file_clear_html():
-    file = open("static/res.html", 'r+')
-    contents = file.read().split("\n")
-    file.seek(0)
-    file.truncate()
-    file.close()
-
-
-def file_write_html(items_to_write):
-    file_clear_html()
-    f = open("static/res.html", 'w+')
-    for item in items_to_write:
-        f.write("%s" % item)
-    f.close()
 
 def empty_folder():
     folder = 'static'
@@ -90,7 +74,7 @@ def ebay_page_post():
             items_found = []
 
             for item in items:
-                cat = item.categoryname.string.lower()
+                pic = item.PictureURL
                 title = item.title.string.strip()
                 price = float(item.currentprice.string)
                 url = item.viewitemurl.string.lower()
@@ -101,7 +85,8 @@ def ebay_page_post():
                 print ('____________________________________________________________')
                 
                 # Adding the item found in the collection
-                items_found.append(HTML_OUTPUT % (title,
+                items_found.append(HTML_OUTPUT % (pic,
+                                                title,
                                                 price,
                                                 seller,
                                                 condition,
