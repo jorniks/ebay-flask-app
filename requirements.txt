@@ -5,4 +5,3 @@ gTTS-token==1.1.1
 gunicorn==19.9.0
 Jinja2==2.9.6
 lxml==4.0.0
-Werkzeug==0.12.2.dev0
