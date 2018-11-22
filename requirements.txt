@@ -1,7 +1,0 @@
-beautifulsoup4==4.6.0
-ebaysdk==2.1.5
-Flask==0.12.2
-gTTS-token==1.1.1
-gunicorn==19.9.0
-Jinja2==2.9.6
-lxml==4.0.0
