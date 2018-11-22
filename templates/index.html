@@ -121,6 +121,38 @@
 				});
 			}
 		});
+
+
+		
+        $('.search').keydown(function(e){
+        	var search = $(".search").val().trim();
+			var file = search + ".html";
+        	
+	        if (e.which == 13) {
+	          	if (search) {
+	      			$.ajax({
+						type: 'POST',
+						url: "{{url_for('ebay_page_post')}}",
+						data: JSON.stringify({ 'search': search }),
+						contentType: 'application/json;charset=UTF-8',
+						dataType: "json",
+						success:function(data) {
+							if (data == "1") {
+								$.ajax({
+								   	url:"/static/"+file,
+								   	dataType:'html',
+								   	success: function(items){
+								       	$('#returned').html(items);
+								   	}
+								});
+							} else {
+								$("#returned").html(data);
+							}
+						}
+					});
+      			}
+	        }
+      	});		
 	});
 
 </script>
