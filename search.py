@@ -6,7 +6,6 @@ import pprint
 import locale
 import time
 import datetime
-import isodate
 import ebaysdk
 from ebaysdk.finding import Connection as finding
 from ebaysdk.exception import ConnectionError
