@@ -1,5 +1,4 @@
 web.py==0.37
-Jinja2==2.6
 BeautifulSoup==3.2.1
 Flask==0.12.2
 Werkzeug==0.8.3
