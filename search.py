@@ -72,31 +72,34 @@ def ebay_page_post():
             # This will be returned
             items_found = []
 
-            for item in items:
-                pic = item.PictureURL
-                title = item.title.string.strip()
-                price = float(item.currentprice.string)
-                url = item.viewitemurl.string.lower()
-                seller = item.sellerusername.text
-                listingtype = item.listingtype.string
-                condition = item.conditiondisplayname.string
+            if response.reply.ack == 'Success':
+                for item in items:
+                    pic = item.pictureURLLarge
+                    title = item.title.string.strip()
+                    price = float(item.currentprice.string)
+                    url = item.viewitemurl.string.lower()
+                    seller = item.sellerusername.text
+                    listingtype = item.listingtype.string
+                    condition = item.conditiondisplayname.string
 
-                print ('____________________________________________________________')
-                
-                # Adding the item found in the collection
-                items_found.append(HTML_OUTPUT % (pic,
-                                                title,
-                                                price,
-                                                seller,
-                                                condition,
-                                                listingtype,
-                                                url))
+                    print ('____________________________________________________________')
+                    
+                    # Adding the item found in the collection
+                    items_found.append(HTML_OUTPUT % (pic,
+                                                    title,
+                                                    price,
+                                                    seller,
+                                                    condition,
+                                                    listingtype,
+                                                    url))
 
-            f = open("static/"+search+".html", 'w+')
-            for item in items_found:
-                f.write("%s" % item)
-            f.close()
-            return "1"
+                f = open("static/"+search+".html", 'w+')
+                for item in items_found:
+                    f.write("%s" % item)
+                f.close()
+                return "1"
+            else:
+                return "Search failed, please make sure you are searching for electronic products only."
 
         except ConnectionError as e:
             return jsonify(e)

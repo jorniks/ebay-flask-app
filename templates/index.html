@@ -43,7 +43,8 @@
 
 	    <div id="more-features" class="col-md-12 text-center fix">
 		    <div class="form-group col-md-12">
-		    	<input type="text" name="text" class="form-control col-lg-6 search" placeholder="Search term (e.g Television)">
+		    	<input type="text" name="text" class="form-control col-lg-6 search" placeholder="Search term (e.g Television)" autofocus>
+		    	<em class="load"></em>
 		    </div>
 		    <button class="btn btn-primary button">Search</button>
 	    </div>
@@ -73,7 +74,7 @@
 	            			&copy; Copyright <strong>NuK-Search</strong>. All Rights Reserved
 	          			</div>
 		          		<div class="credits">
-		            		Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> | Developed by <a href="">Elite Soft</a>
+		            		Developed by <h1><strong>Nummi Dauda</strong></h1>
 		          		</div>
 	        		</div>
 	      		</div>
@@ -99,6 +100,7 @@
 			var search = $(".search").val().trim();
 			var file = search + ".html";
 			if (search) {
+				$(".load").html("Getting results, please wait....");
 				$.ajax({
 					type: 'POST',
 					url: "{{url_for('ebay_page_post')}}",
@@ -107,6 +109,7 @@
 					dataType: "json",
 					success:function(data) {
 						if (data == "1") {
+							$(".load").html("");
 							$.ajax({
 							   	url:"/static/"+file,
 							   	dataType:'html',
@@ -130,6 +133,7 @@
         	
 	        if (e.which == 13) {
 	          	if (search) {
+	          		$(".load").html("Getting results, please wait....");
 	      			$.ajax({
 						type: 'POST',
 						url: "{{url_for('ebay_page_post')}}",
@@ -138,6 +142,7 @@
 						dataType: "json",
 						success:function(data) {
 							if (data == "1") {
+								$(".load").html("");
 								$.ajax({
 								   	url:"/static/"+file,
 								   	dataType:'html',
