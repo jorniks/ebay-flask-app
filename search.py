@@ -21,7 +21,7 @@ HTML_OUTPUT = """
             <div class=\"icon\"><img src=\"%s\" alt=\"Item Image\"></div>
             <h4 class=\"title\">%s</h4>
             <ul>
-                <li>Price: $ %s</li>
+                <li>Price: $ %s | &#8358; %s </li>
                 <li>Seller: %s</li>
                 <li>Condition: %s</li>
                 <li>Listing Type: %s</li>
@@ -81,6 +81,7 @@ def ebay_page_post():
                     seller = item.sellerusername.text
                     listingtype = item.listingtype.string
                     condition = item.conditiondisplayname.string
+                    naira = price * 365
 
                     print ('____________________________________________________________')
                     
@@ -88,6 +89,7 @@ def ebay_page_post():
                     items_found.append(HTML_OUTPUT % (pic,
                                                     title,
                                                     price,
+                                                    naira,
                                                     seller,
                                                     condition,
                                                     listingtype,
