@@ -18,11 +18,9 @@ from flask import request, render_template, jsonify
 HTML_OUTPUT = """
     <div class=\"col-lg-6\">
         <div class=\"box wow fadeInLeft\">
-            <div class=\"icon\"><img src=\"%s\" alt=\"Item Image\"></div>
             <h4 class=\"title\">%s</h4>
             <ul>
                 <li>Price: $ %s | &#8358; %s </li>
-                <li>Seller: %s</li>
                 <li>Condition: %s</li>
                 <li>Listing Type: %s</li>
             </ul>
@@ -86,11 +84,9 @@ def ebay_page_post():
                     print ('____________________________________________________________')
                     
                     # Adding the item found in the collection
-                    items_found.append(HTML_OUTPUT % (pic,
-                                                    title,
+                    items_found.append(HTML_OUTPUT % (title,
                                                     price,
                                                     naira,
-                                                    seller,
                                                     condition,
                                                     listingtype,
                                                     url))
